@@ -40,7 +40,7 @@ args_list = ["keywords", "keywords_from_file", "prefix_keywords", "suffix_keywor
              "output_directory", "image_directory", "no_directory", "proxy", "similar_images", "specific_site",
              "print_urls", "print_size", "print_paths", "metadata", "extract_metadata", "socket_timeout",
              "thumbnail", "thumbnail_only", "language", "prefix", "chromedriver", "related_images", "safe_search", "no_numbering",
-             "offset", "no_download","save_source","silent_mode"]
+             "offset", "no_download","save_source","silent_mode", "trace_freq"]
 
 
 def user_input():
@@ -114,7 +114,8 @@ def user_input():
         parser.add_argument('-nd', '--no_download', default=False, help="Prints the URLs of the images and/or thumbnails without downloading them", action="store_true")
         parser.add_argument('-sil', '--silent_mode', default=False, help="Remains silent. Does not print notification messages on the terminal", action="store_true")
         parser.add_argument('-is', '--save_source', help="creates a text file containing a list of downloaded images along with source page url", type=str, required=False)
-
+        parser.add_argument('-tf', '--trace_freq', help="trace output frequency", type=int, required=False)
+        
         args = parser.parse_args()
         arguments = vars(args)
         records = []
@@ -732,6 +733,9 @@ class googleimagesdownload:
         i = 0
         count = 1
         while count < limit+1:
+            if arguments['trace_freq'] and count % arguments['trace_freq'] == 0:
+                print("processed {} links".format(count-1))
+
             object, end_content = self._get_next_item(page)
             if object == "no_links":
                 break
