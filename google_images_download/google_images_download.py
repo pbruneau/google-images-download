@@ -6,6 +6,8 @@
 
 # Import Libraries
 import sys
+import logging
+logging.basicConfig(filename='google_images_download.log',level=logging.INFO)
 version = (3, 0)
 cur_version = sys.version_info
 if cur_version >= version:  # If the Current Version of Python is 3.0 or above
@@ -734,7 +736,7 @@ class googleimagesdownload:
         count = 1
         while count < limit+1:
             if arguments['trace_freq'] and count % arguments['trace_freq'] == 0:
-                print("processed {} links".format(count-1))
+                logging.info("processed {} links".format(count-1))
 
             object, end_content = self._get_next_item(page)
             if object == "no_links":
